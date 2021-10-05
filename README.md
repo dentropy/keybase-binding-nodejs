@@ -19,10 +19,7 @@ The nodejs keybase binding is simple. Export everything to the file system via J
 This git repo should result in a npm package that can function as a CLI to export whatever a user wants.
 
 * Export Options
-  * List teams
-  * List group chats
-  * List git repos
-  * Chat logs from team chats
-  * Chat logs from groups chat
-  * Attachments from team chats 
-  * Attachments from team chat
+  * List teams `-t --teams` or list group chats `-g --groups`
+  * Chat logs from team chats `-tc --team-chats` or logs from group chat`-gc --group-chat`
+  * Attachments from team chats `-a --attachments` (defaults to no)
+  * Export path `-p --path` (defaults to ./exports)
