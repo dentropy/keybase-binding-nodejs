@@ -4,22 +4,38 @@ The nodejs keybase binding is simple. Export everything to the file system via J
 
 ## Requirements
 
-* nodejs
-* npm
+* nodejs with npm
+  * For Mac and Linux users you can use [Node Version Manager](https://github.com/nvm-sh/nvm)
+* keybase installed and logged in on your computer
 
-## Setup
+## Example commands
 
-* Clone this repo
-* `npm install`
-* `node get_everything.js`
-  * Have to change in line variables to download
+**Help Command**
+`npm exec  keybase-binding -- --help`
 
-## CLI Brainstorming
+**Export a list of teams you are logged into**
+`npm exec  keybase-binding -- -t`
 
-This git repo should result in a npm package that can function as a CLI to export whatever a user wants.
+**Export a all team chats**
+`npm exec  keybase-binding -- -tc dentropydaemon`
 
-* Export Options
-  * List teams `-t --teams` or list group chats `-g --groups`
-  * Chat logs from team chats `-tc --team-chats` or logs from group chat`-gc --group-chat`
-  * Attachments from team chats `-a --attachments` (defaults to no)
-  * Export path `-p --path` (defaults to ./exports)
+**Export a all team chats WITH attachments**
+`npm exec  keybase-binding -- -tc dentropydaemon -a`
+
+**Change export path**
+`npm exec  keybase-binding -- -t -p ~/Downloads/keybase-exports`
+## Development setup
+
+* Join the `@dentropydaemon` team on keybase
+* Clone this repo `git clone keybase://team/dentropydaemon/keybase-binding-nodejs`
+* `cd keybase-binding-nodejs && npm install`
+
+## Features to be added (Ordered by priority)
+
+* Elasticsearch dump option
+* Export multiple teams with single command
+* Export every team or group chat
+  * blacklist
+* Group chat list and export
+* Clone all git repos
+* Export team and user drive
