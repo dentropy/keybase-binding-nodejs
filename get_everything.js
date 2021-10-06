@@ -262,12 +262,13 @@ async function export_attachments_for_topic(export_dir, keybase_user, export_tea
     });
     process.exit(1)
 }
-export_attachments_for_topic("./exports", "dentropy", "dentropydaemon")
+// export_attachments_for_topic("./exports", "dentropy", "dentropydaemon")
 
 export {
     get_keybase_user,
     export_team_memberships,
     create_folder_if_not_exist,
     export_team_topics,
-    get_team_topics
+    get_team_topics,
+    export_attachments_for_topic
 }
