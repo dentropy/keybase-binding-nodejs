@@ -5,10 +5,10 @@ import { get_team_topics, create_folder_if_not_exist, get_keybase_user, export_t
 const program = new Command();
 
 program
-  .option('-t, --teams', true)
-  .option('-g, --groups', true)
-  .option('-tc --teamchats <type>', true)
-  .option('-gc --groupchat <type>', true)
+  .option('-t, --teams', 'export list team to a file print to console')
+  .option('-g, --groups', 'export group chats to a a file and print to console')
+  .option('-tc --teamchats <type>', 'export specified team chat')
+  .option('-gc --groupchat <type>', 'export specified group chat')
   .option('-a --attachments <type>', 'Chose weather to export attachments', false)
   .option('-p --path <type>', 'Export Location', './exports');
 
@@ -29,9 +29,14 @@ async function main() {
   let team_memberships = await export_team_memberships(
     `${options.path}/${keybase_user}/team_memberships.json`
   )
+  if (options.teams) {
+    team_memberships.forEach((team) => {
+      console.log(team.Team)
+    })
+  }
   // Saves in options.path, user / teams / team_name
   // TODO CREATE DIRECTORIES IF NOT THERE
-  if (options.teamchats){
+  if (options.teamchats) {
     console.log("IT RAN")
     let team_list = [];
     team_memberships.forEach((team) => {
