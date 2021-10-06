@@ -105,10 +105,10 @@ async function create_folder_if_not_exist(create_folder_name){
 }
 
 async function get_team_topics(export_dir, keybase_user, team_name){
-    let topic_file_name = `${export_dir}/${keybase_user}/teams/${team_name}/topics.json`
+    let topic_file_name = `${export_dir}/${keybase_user}/teams/${team_name}-topics.json`
     // console.log("topic_file_name")
     // console.log(topic_file_name)
-    if (  fs.existsSync(`${export_dir}/${keybase_user}/teams/${team_name}/topics.json`)  ) {
+    if (  fs.existsSync(`${export_dir}/${keybase_user}/teams/${team_name}-topics.json`)  ) {
         return JSON.parse(await fs.readFileSync(topic_file_name, 'utf8'))
     }
     else {
@@ -236,6 +236,10 @@ async function main() {
     process.exit(1)
 }
 //main()
+
+async function export_attachments_for_topic(export_dir, keybase_user, export_team_name){
+
+}
 
 export {
     get_keybase_user,
