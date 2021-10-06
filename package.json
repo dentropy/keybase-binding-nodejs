@@ -1,5 +1,5 @@
 {
-  "email" : "dentropy@protonmail.com",
+  "email": "dentropy@protonmail.com",
   "name": "keybase-binding",
   "version": "0.0.2",
   "description": "",
@@ -7,6 +7,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "export": "node ./keybase-binding-cli.js"
+  },
+  "bin": {
+    "keybase-binding": "node ./keybase-binding-cli.js"
   },
   "author": "Paul Mullins",
   "license": "ISC",
@@ -18,6 +21,7 @@
     "extract-domain": "^2.3.4",
     "extract-urls": "^1.3.2",
     "fast-glob": "^3.2.7",
+    "keybase-binding": "^0.0.2",
     "shelljs": "^0.8.4"
   }
 }
