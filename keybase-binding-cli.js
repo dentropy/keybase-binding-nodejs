@@ -1,4 +1,4 @@
-// index.ts
+#!/usr/bin/env node
 import { Command } from 'commander';
 import { get_team_topics, export_attachments_for_topic, create_folder_if_not_exist, get_keybase_user, export_team_memberships, export_team_topics } from './get_everything.js';
 
