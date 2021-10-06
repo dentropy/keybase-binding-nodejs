@@ -238,8 +238,31 @@ async function main() {
 //main()
 
 async function export_attachments_for_topic(export_dir, keybase_user, export_team_name){
-
+    let team_folder_path = `${export_dir}/${keybase_user}/teams/${export_team_name}/`
+    let attachment_folder_path = `${export_dir}/${keybase_user}/teams/attachments/`
+    create_folder_if_not_exist(attachment_folder_path)
+    fs.readdirSync(team_folder_path).forEach(file => {
+        console.log(team_folder_path + file)
+        let team_messages = JSON.parse(fs.readFileSync(team_folder_path + file));
+        let topic_name = file.substring(0,file.length - 5)
+        team_messages.forEach((message) => {
+            if (message.msg.content.type == "attachment") {
+                console.log(message.msg.content.attachment.object.filename)
+                let split_filename_str = message.msg.content.attachment.object.filename.split(".")
+                let file_ending = split_filename_str[split_filename_str.length - 1]
+                console.log(file_ending)
+                let export_cmd = `keybase chat download --topic-type chat ${export_team_name} \
+                    --channel ${topic_name} ${message.msg.id} \
+                    -o ${attachment_folder_path}${export_team_name}.${topic_name}.${message.msg.id}.${file_ending}`
+                console.log(export_cmd)
+                let export_result = execSync(export_cmd).toString("utf8")
+                console.log(export_result)
+            }
+        })
+    });
+    process.exit(1)
 }
+export_attachments_for_topic("./exports", "dentropy", "dentropydaemon")
 
 export {
     get_keybase_user,
