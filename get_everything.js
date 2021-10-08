@@ -144,97 +144,102 @@ async function export_team_topics(export_dir, keybase_user, export_team_name){
     console.log(export_team_name)
     create_folder_if_not_exist(`${export_dir}/${keybase_user}`)
     create_folder_if_not_exist(`${export_dir}/${keybase_user}/teams`)
+    let team_folder = `${export_dir}/${keybase_user}/teams/${export_team_name}`
     create_folder_if_not_exist(`${export_dir}/${keybase_user}/teams/${export_team_name}`)
-    let team_topics = await get_team_topics(export_dir, keybase_user, export_team_name)
-    for(var i = 0; i < team_topics.result.conversations.length; i++){
-        let tmp_topic_messages = await get_keybase_topic(
-            team_topics.result.conversations[i].channel.name,
-            team_topics.result.conversations[i].channel.members_type,
-            team_topics.result.conversations[i].channel.topic_name
-        )
-        tmp_topic_messages.forEach((element) => {
-            if (element.msg.content.type == "text"){
-                var urls = extractUrls(element.msg.content.text.body, true);
-                if (urls != undefined){
-                    console.log(urls)
-                    element.msg.urls = urls
-                    element.msg.url_num = urls.length
-                    element.msg.domains = [ ...new Set(extractDomain(urls))]
-                    element.msg.domains_num = element.msg.domains.length
+    if ( ! ((await fs.readdirSync(team_folder)).length > 0)  ){
+        let team_topics = await get_team_topics(export_dir, keybase_user, export_team_name)
+        for(var i = 0; i < team_topics.result.conversations.length; i++){
+            let tmp_topic_messages = await get_keybase_topic(
+                team_topics.result.conversations[i].channel.name,
+                team_topics.result.conversations[i].channel.members_type,
+                team_topics.result.conversations[i].channel.topic_name
+            )
+            tmp_topic_messages.forEach((element) => {
+                if (element.msg.content.type == "text"){
+                    var urls = extractUrls(element.msg.content.text.body, true);
+                    if (urls != undefined){
+                        console.log(urls)
+                        element.msg.urls = urls
+                        element.msg.url_num = urls.length
+                        element.msg.domains = [ ...new Set(extractDomain(urls))]
+                        element.msg.domains_num = element.msg.domains.length
+                    }
                 }
-            }
-        })
-        fs.writeFileSync(`${export_dir}/${keybase_user}/teams/${export_team_name}/${team_topics.result.conversations[i].channel.topic_name}.json`, JSON.stringify(tmp_topic_messages), (err) => {
-            if (err) {
-                throw err;
-            }
-            console.log(`export of topic ${team_topics.result.conversations[i].channel.topic_name} for team ${export_team_name} is saved in ${tmp_file_output}.`);
-        });
-    }
-}
-
-async function main() {
-    let keybase_user;
-    let export_dir = "./exports"
-    keybase_user = await get_keybase_user()
-    console.log(`Currently logged in as ${keybase_user}`)
-    // Create folder for user and their teams if it does not exist
-    create_folder_if_not_exist(`${export_dir}/${keybase_user}`)
-    create_folder_if_not_exist(`${export_dir}/${keybase_user}/teams`)
-    // Export method list, so it is easier to look at
-    let method_list = get_method_list()
-    fs.writeFileSync(`${export_dir}/${keybase_user}/method_list.json`, JSON.stringify(method_list), (err) => {
-        if (err) {
-            throw err;
+            })
+            fs.writeFileSync(`${export_dir}/${keybase_user}/teams/${export_team_name}/${team_topics.result.conversations[i].channel.topic_name}.json`, JSON.stringify(tmp_topic_messages), (err) => {
+                if (err) {
+                    throw err;
+                }
+                console.log(`export of topic ${team_topics.result.conversations[i].channel.topic_name} for team ${export_team_name} is saved in ${tmp_file_output}.`);
+            });
         }
-        console.log(`team_memberships is saved to ${tmp_file_output}.`);
-    });
-    // Export / Import list of teams user is on
-    let team_memberships = await export_team_memberships(`${export_dir}/${keybase_user}/team_memberships.json`)
-    console.log(`${team_memberships.length} teams were imported`)
-    // export_teams_topics_metadata(export_dir, keybase_user, team_memberships)
-    // Create a folder for every team, export the topics, plus export the messages
-    for(var i = 0; i < team_memberships.length; i++){
-        await get_team_topics(export_dir, keybase_user, team_memberships[i].Team)
+    } else {
+        console.log(`${export_team_name} has already been exported`)
     }
-
-    // Export all topics for a single team
-    let export_team_name = "dentropydaemon";
-    let team_topics = await get_team_topics(export_dir, keybase_user, export_team_name)
-    //console.log(team_topics)
-    for(var i = 0; i < team_topics.result.conversations.length; i++){
-        let tmp_topic_messages = await get_keybase_topic(
-            team_topics.result.conversations[i].channel.name,
-            team_topics.result.conversations[i].channel.members_type,
-            team_topics.result.conversations[i].channel.topic_name
-        )
-        tmp_topic_messages.forEach((element) => {
-            if (element.msg.content.type == "text"){
-                var urls = extractUrls(element.msg.content.text.body, true);
-                if (urls != undefined){
-                    console.log(urls)
-                    element.msg.urls = urls
-                    element.msg.url_num = urls.length
-                    element.msg.domains = [ ...new Set(extractDomain(urls))]
-                    element.msg.domains_num = element.msg.domains.length
-                }
-            }
-        })
-        fs.writeFileSync(`${export_dir}/${keybase_user}/teams/${export_team_name}/${team_topics.result.conversations[i].channel.topic_name}.json`, JSON.stringify(tmp_topic_messages), (err) => {
-            if (err) {
-                throw err;
-            }
-            console.log(`export of topic ${team_topics.result.conversations[i].channel.topic_name} for team ${export_team_name} is saved in ${tmp_file_output}.`);
-        });
-    }
-    // Parse URL's
-    // Parse Domain Name's
-    // Connect Reactions, Use Elastic Search
-    // Export DM's to file
-    // Export Git Repos to file 
-
-    process.exit(1)
 }
+
+// async function main() {
+//     let keybase_user;
+//     let export_dir = "./exports"
+//     keybase_user = await get_keybase_user()
+//     console.log(`Currently logged in as ${keybase_user}`)
+//     // Create folder for user and their teams if it does not exist
+//     create_folder_if_not_exist(`${export_dir}/${keybase_user}`)
+//     create_folder_if_not_exist(`${export_dir}/${keybase_user}/teams`)
+//     // Export method list, so it is easier to look at
+//     let method_list = get_method_list()
+//     fs.writeFileSync(`${export_dir}/${keybase_user}/method_list.json`, JSON.stringify(method_list), (err) => {
+//         if (err) {
+//             throw err;
+//         }
+//         console.log(`team_memberships is saved to ${tmp_file_output}.`);
+//     });
+//     // Export / Import list of teams user is on
+//     let team_memberships = await export_team_memberships(`${export_dir}/${keybase_user}/team_memberships.json`)
+//     console.log(`${team_memberships.length} teams were imported`)
+//     // export_teams_topics_metadata(export_dir, keybase_user, team_memberships)
+//     // Create a folder for every team, export the topics, plus export the messages
+//     for(var i = 0; i < team_memberships.length; i++){
+//         await get_team_topics(export_dir, keybase_user, team_memberships[i].Team)
+//     }
+
+//     // Export all topics for a single team
+//     let export_team_name = "dentropydaemon";
+//     let team_topics = await get_team_topics(export_dir, keybase_user, export_team_name)
+//     //console.log(team_topics)
+//     for(var i = 0; i < team_topics.result.conversations.length; i++){
+//         let tmp_topic_messages = await get_keybase_topic(
+//             team_topics.result.conversations[i].channel.name,
+//             team_topics.result.conversations[i].channel.members_type,
+//             team_topics.result.conversations[i].channel.topic_name
+//         )
+//         tmp_topic_messages.forEach((element) => {
+//             if (element.msg.content.type == "text"){
+//                 var urls = extractUrls(element.msg.content.text.body, true);
+//                 if (urls != undefined){
+//                     console.log(urls)
+//                     element.msg.urls = urls
+//                     element.msg.url_num = urls.length
+//                     element.msg.domains = [ ...new Set(extractDomain(urls))]
+//                     element.msg.domains_num = element.msg.domains.length
+//                 }
+//             }
+//         })
+//         fs.writeFileSync(`${export_dir}/${keybase_user}/teams/${export_team_name}/${team_topics.result.conversations[i].channel.topic_name}.json`, JSON.stringify(tmp_topic_messages), (err) => {
+//             if (err) {
+//                 throw err;
+//             }
+//             console.log(`export of topic ${team_topics.result.conversations[i].channel.topic_name} for team ${export_team_name} is saved in ${tmp_file_output}.`);
+//         });
+//     }
+//     // Parse URL's
+//     // Parse Domain Name's
+//     // Connect Reactions, Use Elastic Search
+//     // Export DM's to file
+//     // Export Git Repos to file 
+
+//     process.exit(1)
+// }
 //main()
 
 async function export_attachments_for_topic(export_dir, keybase_user, export_team_name){
