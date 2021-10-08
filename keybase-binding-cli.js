@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 import { get_team_topics, export_attachments_for_topic, create_folder_if_not_exist, get_keybase_user, export_team_memberships, export_team_topics } from './get_everything.js';
+import { dumb_to_elastic } from './elastic_dump.js';
 
 const program = new Command();
 
@@ -10,7 +11,11 @@ program
   .option('-tc --teamchats <type>', 'export specified team chat')
   .option('-gc --groupchat <type>', '*TODO* export specified group chat')
   .option('-a --attachments', 'Chose weather to export attachments', false)
-  .option('-p --path <type>', 'Export Location', './exports');
+  .option('-p --path <type>', 'Export Location', './exports')
+  .option('-en --elasticnode <type>', 'Elasticsearch node')
+  .option('-eu --elasticuser <type>', 'Elasticsearch username')
+  .option('-ep --elasticpass <type>', 'Elasticsearch password')
+  .option('-ei --elasticindex <type>', 'Elasticsearch index')
 
 async function main() {
   program.parse(process.argv);
@@ -54,6 +59,20 @@ async function main() {
   }
   if (options.attachments) {
     await export_attachments_for_topic(options.path, keybase_user, options.teamchats)
+  }
+  if (options.path && options.teamchats && options.elasticnode && options.elasticuser && options.elasticpass && options.elasticindex) {
+    console.log("Indexing to elasticsearch")
+    await dumb_to_elastic(
+      options.path, 
+      keybase_user, 
+      options.teamchats,
+      options.elasticnode,
+      options.elasticuser,
+      options.elasticpass,
+      options.elasticindex )
+    console.log("Done indexing everything to elasticsearch")
+  } else {
+    console.log("Not indexing anything to elasticsearch")
   }
   
   
