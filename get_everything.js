@@ -169,6 +169,7 @@ async function export_team_topics(export_dir, keybase_user, export_team_name){
                         element.msg.domains_num = element.msg.domains.length
                     }
                 }
+                // TODO ALSO EXTRACT CHARACTER COUNT, URLS, AND WORD COUNT FOR EDITS
             })
             fs.writeFileSync(`${export_dir}/${keybase_user}/teams/${export_team_name}/${team_topics.result.conversations[i].channel.topic_name}.json`, JSON.stringify(tmp_topic_messages), (err) => {
                 if (err) {

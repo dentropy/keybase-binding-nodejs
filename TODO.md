@@ -5,3 +5,4 @@
   * Find all attachments and save to attachments folder
 * List group chats
 * Export group chat
+* TODO ALSO EXTRACT CHARACTER COUNT, URLS, AND WORD COUNT FOR EDITS
