@@ -158,6 +158,8 @@ async function export_team_topics(export_dir, keybase_user, export_team_name){
                 element.msg.topic_id = element.msg.id
                 element.id = `${export_team_name}-${team_topics.result.conversations[i].channel.name}-${element.msg.id}`
                 if (element.msg.content.type == "text"){
+                    element.msg.content.content_character_length = element.msg.content.text.body.length;
+                    element.msg.content.content_word_length = element.msg.content.text.body.split(" ").length
                     var urls = extractUrls(element.msg.content.text.body, true);
                     if (urls != undefined){
                         console.log(urls)

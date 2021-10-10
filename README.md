@@ -24,6 +24,17 @@ The nodejs keybase binding is simple. Export everything to the file system via J
 
 **Change export path**
 `npm exec  keybase-binding -- -t -p ~/Downloads/keybase-exports`
+
+**Export to elasticsearch**
+
+``` bash
+# -en Elastic node URL
+# -eu Elastic user
+# -ep Elastic password
+# -ei Elastic index
+npm exec  keybase-binding -- -tc dentropydaemon \
+-en http://localhost:9200 -eu elastic -ep yourpass -ei keybase-dentropydaemon
+```
 ## Development setup
 
 * Join the `@dentropydaemon` team on keybase
