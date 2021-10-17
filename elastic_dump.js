@@ -80,6 +80,33 @@ async function dumb_to_elastic(
         }
     }
     )
+    response = await client.indices.putMapping({
+        index: elastic_index,
+        body: {
+          "properties": {
+            "msg.channel.topic_name": { 
+              "type":     "text",
+              "fielddata": true
+            },
+            "msg.content.type": { 
+              "type":     "text",
+              "fielddata": true
+            },
+            "msg.sender.username": { 
+              "type":     "text",
+              "fielddata": true
+            },
+            "msg.content.reaction.b": { 
+              "type":     "text",
+              "fielddata": true
+            },
+            "msg.channel.name": { 
+              "type":     "text",
+              "fielddata": true
+            }
+          }
+        }
+      })
     for(let j = 0; j < files_to_index.length; j++){
         let file_content = fs.readFileSync(files_to_index[j], 'utf8')
         let dataset = JSON.parse(file_content)
