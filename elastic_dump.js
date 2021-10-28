@@ -76,7 +76,7 @@ async function dumb_to_elastic(
     var response = await client.indices.putSettings({
         index: elastic_index,
         body:{
-            "index.mapping.total_fields.limit": 2000
+            "index.mapping.total_fields.limit": 4000
         }
     }
     )

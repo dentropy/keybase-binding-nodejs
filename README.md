@@ -16,10 +16,10 @@ The nodejs keybase binding is simple. Export everything to the file system via J
 **Export a list of teams you are logged into**
 `npm exec  keybase-binding -- -t`
 
-**Export a all team chats**
+**Export a team chats**
 `npm exec  keybase-binding -- -tc dentropydaemon`
 
-**Export a all team chats WITH attachments**
+**Export a team chats WITH attachments**
 `npm exec  keybase-binding -- -tc dentropydaemon -a`
 
 **Change export path**
