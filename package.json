@@ -1,7 +1,7 @@
 {
   "email": "dentropy@protonmail.com",
   "name": "keybase-binding",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "",
   "main": "keybase-binding-cli.js",
   "scripts": {
