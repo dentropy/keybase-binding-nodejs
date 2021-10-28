@@ -33,7 +33,12 @@ The nodejs keybase binding is simple. Export everything to the file system via J
 # -ep Elastic password
 # -ei Elastic index
 npm exec  keybase-binding -- -tc dentropydaemon \
--en http://localhost:9200 -eu elastic -ep yourpass -ei keybase-dentropydaemon
+  -en http://localhost:9200 -eu elastic -ep yourpass -ei keybase-dentropydaemon
+
+curl -XGET  -iL -u $ELASTIC_USER:$ELASTIC_PASS $ELASTIC_NODE/keybase-*/_settings --insecure my_index/_settings
+{
+  "index.mapping.total_fields.limit": 2000
+}
 ```
 ## Development setup
 
