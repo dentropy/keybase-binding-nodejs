@@ -29,7 +29,7 @@ The nodejs keybase binding is simple. Export everything to the file system via J
 
 ``` bash
 npm exec  keybase-binding -- \
-    -i ./exports/TEAM_NAME/teams/homer_cw/CHANNEL_NAME.json \
+    -i ./exports/YOUR_KEYBASE_NAME/teams/homer_cw/CHANNEL_NAME.json \
     -it dentropydaemon \
     -ic bot-testing`
 ```
