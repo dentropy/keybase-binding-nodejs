@@ -1,7 +1,8 @@
 # Custom Stuff
 
 exports/
-
+exports.zip
+__MACOSX/
 
 # Nodejs stuff
 # Logs
