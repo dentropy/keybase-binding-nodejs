@@ -25,6 +25,15 @@ The nodejs keybase binding is simple. Export everything to the file system via J
 **Change export path**
 `npm exec  keybase-binding -- -t -p ~/Downloads/keybase-exports`
 
+**Import chat logs to another team channel**
+
+``` bash
+npm exec  keybase-binding -- \
+    -i ./exports/TEAM_NAME/teams/homer_cw/CHANNEL_NAME.json \
+    -it dentropydaemon \
+    -ic bot-testing`
+```
+
 **Export to elasticsearch**
 
 ``` bash
@@ -44,7 +53,7 @@ curl -XGET  -iL -u $ELASTIC_USER:$ELASTIC_PASS $ELASTIC_NODE/keybase-*/_settings
 
 * Join the `@dentropydaemon` team on keybase
 * Clone this repo `git clone keybase://team/dentropydaemon/keybase-binding-nodejs`
-* `cd keybase-binding-nodejs && npm install`
+* `cd keybase-binding-nodejs && npm install && npm link`
 
 ## Features to be added (Ordered by priority)
 
